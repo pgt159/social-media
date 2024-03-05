@@ -60,6 +60,7 @@ export function* handleAuthLogin(action) {
     const response = yield call(requestAuthLogin, payload);
     if (response.status === 200) {
       if (response.data.access_token && response.data.refresh_token) {
+        console.log("hello");
         saveToken(response.data.access_token, response.data.refresh_token);
         apiMethod.defaults.headers[
           "Authorization"
