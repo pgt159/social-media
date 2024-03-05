@@ -66,7 +66,7 @@ export function* handleAuthLogin(action) {
           "Authorization"
         ] = `Bearer ${response.data.access_token}`;
         yield call(handleAuthFetchMe, { payload: response.data.access_token });
-        window.location.href = "/";
+        // window.location.href = "/";
       }
       toast.success("Login successfully", {
         toastId: "login_success",
