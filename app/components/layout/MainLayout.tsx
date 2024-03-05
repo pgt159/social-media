@@ -11,7 +11,6 @@ import HomeHeader from "@/app/home/component/header/HomeHeader";
 import ChatBox from "@/app/home/component/body/contacts/ChatBox";
 import { chatRoomFetch } from "@/lib/features/message/messSlice";
 import { io } from "socket.io-client";
-import { ENDPOINT } from "@/app/home/configs/constants";
 import { SocketProvider } from "../SocketProvider";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {

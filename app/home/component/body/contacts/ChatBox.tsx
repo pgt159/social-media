@@ -14,8 +14,6 @@ import {
 } from "@/app/home/store/service";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Empty from "@/app/components/empty/Empty";
-import { ENDPOINT } from "@/app/home/configs/constants";
-import { io } from "socket.io-client";
 import { v4 } from "uuid";
 import { IUser } from "@/app/profile/type";
 import {

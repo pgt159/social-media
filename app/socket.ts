@@ -4,6 +4,6 @@ import { io } from "socket.io-client";
 const URL =
   process.env.NODE_ENV === "production"
     ? "https://social-media-server-w8cl.onrender.com"
-    : "http://localhost:8000";
+    : "http://localhost:8080";
 
 export const socket = io(URL);
