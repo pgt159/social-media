@@ -1,1 +1,1 @@
-export const ENDPOINT = "http://localhost:8080";
+export const ENDPOINT = "https://social-media-server-w8cl.onrender.com";
