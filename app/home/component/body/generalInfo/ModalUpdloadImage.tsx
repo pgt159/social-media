@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { authUpdateUser } from "@/lib/features/auth/authSlice";
 import { updateUser } from "@/app/home/store/service";
 import { toast } from "react-toastify";
+import { usePathname, useRouter } from "next/navigation";
 
 const style = {
   position: "absolute" as "absolute",
@@ -44,6 +45,8 @@ const ModalUploadImage = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { user, accessToken } = useAppSelector((state) => state.auth);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleChangeAvatar = async () => {
     if (isLoading) return;
@@ -69,9 +72,14 @@ const ModalUploadImage = ({
                 })
               );
             });
-            toast.success("Update user avatar successfully", {
-              toastId: "update_avatar",
-            });
+            toast.success(
+              "Update user avatar successfully, reload to apply changes",
+              {
+                toastId: "update_avatar",
+              }
+            );
+            setOpen(null);
+            router.replace(pathname);
           } else {
             toast.success("Update user avatar failed", {
               toastId: "update_avatar",
