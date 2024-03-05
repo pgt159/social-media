@@ -38,9 +38,16 @@ export function* handleAuthRegister(action) {
       toast.success("Register successfully", {
         toastId: "register_success",
       });
+    } else {
+      toast.error(response.message || "Register failed", {
+        toastId: "register_failed",
+      });
     }
   } catch (error) {
     console.log(error);
+    toast.error(error.response.data.message || "Register failed", {
+      toastId: "register_failed",
+    });
   } finally {
     yield put(loadingToggle(false));
   }
@@ -63,9 +70,16 @@ export function* handleAuthLogin(action) {
       toast.success("Login successfully", {
         toastId: "login_success",
       });
+    } else {
+      toast.error(response.message || "Login failed", {
+        toastId: "login_failed",
+      });
     }
   } catch (error) {
     console.log(error);
+    toast.error(error.response.data.message || "Login failed", {
+      toastId: "login_failed",
+    });
   } finally {
     yield put(loadingToggle(false));
   }

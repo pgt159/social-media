@@ -32,7 +32,12 @@ const FormLogin = () => {
     values: ILoginProps,
     formikHelpers: FormikHelpers<ILoginProps>
   ): Promise<void> => {
-    dispatch(authLogin(values));
+    dispatch(
+      authLogin({
+        email: values.email?.toLowerCase(),
+        password: values.password,
+      })
+    );
   };
 
   return (
