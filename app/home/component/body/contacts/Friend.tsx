@@ -30,7 +30,6 @@ const Friend = ({
     const chatRoomExisted = allChatRoom.find((item) =>
       item.users.find((userItem) => userItem._id === friend._id)
     );
-    // console.log(chatRoomExisted);
     dispatch(
       messOpenNewChatRoom({
         users: [userId, friend?._id],

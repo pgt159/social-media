@@ -41,7 +41,6 @@ const ModalUpdatePost = ({
         return item?._id === post?._id;
       });
       existingPosts[updatedPostIndex] = returnedData.data.data;
-      console.log(existingPosts);
       queryClient.setQueryData(["posts"], existingPosts);
       toast.success("Update post successfully", {
         toastId: "update_post",

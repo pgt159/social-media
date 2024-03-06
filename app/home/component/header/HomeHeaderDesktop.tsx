@@ -24,9 +24,7 @@ const HomeHeaderDesktop = ({ user }: { user: IUser }) => {
   const [isMessOpen, setIsMessOpen] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const { allChatRoom, activeMess } = useAppSelector(
-    (state) => state.mess.allChatRoom
-  );
+  const { allChatRoom, activeMess } = useAppSelector((state) => state.mess);
 
   const theme = useTheme();
   const dark = theme.palette.neutral.dark;

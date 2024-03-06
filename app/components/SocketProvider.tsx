@@ -17,7 +17,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     if (!user || !socket) return;
     socket.emit("setup", user);
     return () => {
-      console.log("returned");
       socket.off("connected");
       socket.off("setup");
     };

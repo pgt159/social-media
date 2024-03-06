@@ -6,6 +6,7 @@ import ThemeProvider from "./components/ThemeProvider";
 import QueryProvider from "./components/QueryProvider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,6 +23,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
               <ToastContainer limit={3} autoClose={3000} />
               <AppRouterCacheProvider options={{ enableCssLayer: true }}>
                 {children}
+                <SpeedInsights />
               </AppRouterCacheProvider>
             </ThemeProvider>
           </QueryProvider>

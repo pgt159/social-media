@@ -53,11 +53,6 @@ const ChatRoomMobile = ({ params }) => {
   useEffect(() => {
     if (socket && data) {
       socket.on("joined chat", () => {
-        console.log("joined");
-        socket.on("message", () => {
-          console.log("new message");
-        });
-        console.log("59");
         socket.on("message received", (newMessage: IMess) => {
           if (!data || data._id !== newMessage.chatRoomId) {
             // give notification
@@ -78,8 +73,6 @@ const ChatRoomMobile = ({ params }) => {
           setTimeout(scrollToBottom, 200);
         });
       });
-
-      console.log("ending");
     }
 
     // return () => {
