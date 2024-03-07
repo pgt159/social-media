@@ -14,14 +14,14 @@ import React from "react";
 import moment from "moment";
 const Message = ({
   message,
-  user,
   isMyMessage,
   isTyping,
+  picturePath,
 }: {
   message?: IMess;
-  user?: IUser;
   isMyMessage?: boolean;
   isTyping?: boolean;
+  picturePath?: string;
 }) => {
   const messStyle = {
     display: "flex",
@@ -60,7 +60,7 @@ const Message = ({
           }}
         >
           <Image
-            src={user?.picturePath || "/static/images/default-avatar.jpg"}
+            src={picturePath || "/static/images/default-avatar.jpg"}
             alt="user_avatar"
             fill
             style={{ objectFit: "cover", borderRadius: "50%" }}

@@ -1,1 +1,1 @@
-export const ENVIRONMENT: string = "production";
+export const ENVIRONMENT: string = "development";

@@ -85,7 +85,11 @@ const Post = ({ item }: { item: IPost }) => {
         onClick={() => {}}
       >
         <Image
-          src={item?.userPicturePath || "/static/images/default-avatar.jpg"}
+          src={
+            item?.user?.picturePath ||
+            item?.userPicturePath ||
+            "/static/images/default-avatar.jpg"
+          }
           width={50}
           height={50}
           alt={"user_avatar"}

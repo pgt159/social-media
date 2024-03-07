@@ -286,7 +286,11 @@ const ChatBox = ({ item }: { item?: IChatRoom }) => {
                   <Message
                     key={dataItem._id}
                     message={dataItem}
-                    user={dataItem.sentBy}
+                    picturePath={
+                      dataItem.sentBy?._id === user?._id
+                        ? user?.picturePath
+                        : friend?.picturePath
+                    }
                     isMyMessage={dataItem.sentBy?._id === user?._id}
                   />
                 ))
@@ -295,7 +299,7 @@ const ChatBox = ({ item }: { item?: IChatRoom }) => {
               <Message
                 key={v4()}
                 message={null}
-                user={friend}
+                picturePath={friend?.picturePath}
                 isMyMessage={false}
                 isTyping={true}
               />
@@ -334,10 +338,12 @@ const ChatBox = ({ item }: { item?: IChatRoom }) => {
             setIsMeTyping(true);
             setTimeout(() => {
               setIsMeTyping(false);
-            }, 1000);
+            }, 2000);
           }}
           onKeyDown={(e) => {
             if (e.code === "Enter") {
+              if (!inputRef.current.value || inputRef.current.value.length <= 0)
+                return;
               handleCreateMessage();
               setIsMeTyping(false);
             }
@@ -348,7 +354,12 @@ const ChatBox = ({ item }: { item?: IChatRoom }) => {
             sendLoading ? "cursor-not-allowed" : "cursor-pointer"
           }`}
           onClick={() => {
-            if (sendLoading) return;
+            if (
+              sendLoading ||
+              !inputRef.current.value ||
+              inputRef.current.value.length <= 0
+            )
+              return;
             handleCreateMessage();
           }}
         >
