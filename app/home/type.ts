@@ -12,6 +12,7 @@ export interface IPost {
   updatedAt: string;
   userId: string;
   userPicturePath?: string;
+  user?: IUser;
   __v?: number;
   _id: string;
 }
