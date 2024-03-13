@@ -16,6 +16,7 @@ import React, { useRef, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
+  createNotification,
   serviceCreateComment,
   serviceGetComment,
 } from "@/app/home/store/service";
@@ -70,8 +71,6 @@ const ModalDetailPost = ({
       inputRef.current.value = "";
       setTimeout(() => {
         queryClient.invalidateQueries(["comments", post?._id]);
-      }, 100);
-      setTimeout(() => {
         if (typeof queryClient.getQueryData("posts") !== "object") return;
         const existingPosts = queryClient.getQueryData("posts") as any[];
         const updatedPostIndex = existingPosts.findIndex((item) => {
@@ -82,6 +81,13 @@ const ModalDetailPost = ({
           comments: Number((existingPosts[updatedPostIndex].comments || 0) + 1),
         };
         queryClient.setQueryData("posts", existingPosts);
+        if (user._id !== post.userId) {
+          createNotification({
+            toUser: post?.userId,
+            postId: post?._id,
+            type: "comment",
+          });
+        }
       }, 100);
     },
   });

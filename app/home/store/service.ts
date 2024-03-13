@@ -132,3 +132,20 @@ export const serviceCreateMessage = ({
 export const updateUser = (payload) => {
   return apiMethod.patch(`${API.LIST_USER}`, payload);
 };
+
+// Notification
+export const getAllNotification = () => {
+  return apiMethod.get(`${API.NOTI_CRUD}?limit=50`);
+};
+
+export const createNotification = (payload: {
+  toUser: string;
+  type: string;
+  postId: string;
+}) => {
+  return apiMethod.post(`${API.NOTI_CRUD}`, payload);
+};
+
+export const getNotificationUnread = () => {
+  return apiMethod.get(`${API.NOTI_UNREAD}`);
+};

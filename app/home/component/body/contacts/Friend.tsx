@@ -37,7 +37,6 @@ const Friend = ({
       })
     );
   };
-  console.log(friend);
   return (
     <IconButton
       key={friend._id}

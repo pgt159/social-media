@@ -12,13 +12,17 @@ import {
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   fetchFriendRequests,
+  getAllNotification,
   serviceConfirmFriendRequest,
 } from "../../store/service";
 import SkeletonNoti from "./SkeletonNoti";
 import Image from "next/image";
 import FriendConfirmButton from "./buttons/FriendConfirmButton";
 import { useSocket } from "@/app/components/SocketProvider";
-
+import { useQuery, useQueryClient } from "react-query";
+import Empty from "@/app/components/empty/Empty";
+import { INoti } from "../../type";
+import moment from "moment";
 interface INotiProps {
   isNotiOpen: boolean;
   setIsNotiOpen: Dispatch<SetStateAction<boolean>>;
@@ -39,12 +43,17 @@ const SlidingMenuNoti = ({ isNotiOpen, setIsNotiOpen }: INotiProps) => {
   const [listFriendRequest, setListFriendRequest] = useState<IFriendRequest[]>(
     []
   );
+  const queryClient = useQueryClient();
+
+  const [listNoti, setListNoti] = useState([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const socket = useSocket();
 
   const [loadingFr, setLoadingFr] = useState<boolean>(false);
 
   const SlidingMenu = styled(Paper)(({ theme }) => ({
-    width: "300px",
+    width: "400px",
     maxHeight: "calc(100vh - 73px - 20px)",
     position: "fixed",
     top: "73px",
@@ -68,6 +77,7 @@ const SlidingMenuNoti = ({ isNotiOpen, setIsNotiOpen }: INotiProps) => {
     flexDirection: "column",
     gap: "0.5rem",
     marginBottom: "0.75rem",
+    justifyContent: "center",
   }));
 
   const Title = styled(Typography)(({ theme }) => ({
@@ -79,6 +89,7 @@ const SlidingMenuNoti = ({ isNotiOpen, setIsNotiOpen }: INotiProps) => {
   useEffect(() => {
     if (isNotiOpen) {
       getUserFriendRequest();
+      fetchAllNotification();
     }
   }, [isNotiOpen]);
 
@@ -110,6 +121,19 @@ const SlidingMenuNoti = ({ isNotiOpen, setIsNotiOpen }: INotiProps) => {
     }
   };
 
+  const fetchAllNotification = async () => {
+    setLoading(true);
+    try {
+      const res = await getAllNotification();
+      if (res.status === 200) {
+        setListNoti(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Drawer
       anchor={"top"}
@@ -202,14 +226,75 @@ const SlidingMenuNoti = ({ isNotiOpen, setIsNotiOpen }: INotiProps) => {
               )}
             </Wrapper>
           ) : null}
-          {/* <Wrapper>
+          <Wrapper>
             <Title>Notifications</Title>
-            {true
-              ? Array(6)
-                  .fill(null)
-                  .map((item, index) => <SkeletonNoti key={index} />)
-              : null}
-          </Wrapper> */}
+            {loading ? (
+              Array(6)
+                .fill(null)
+                .map((item, index) => <SkeletonNoti key={index} />)
+            ) : listNoti && listNoti?.length > 0 ? (
+              listNoti.map((notiItem: INoti) => (
+                <NotiItem key={notiItem?._id}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: "1rem",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box className={"flex"}>
+                      <Image
+                        width={65}
+                        height={65}
+                        src={
+                          notiItem?.fromUser?.picturePath ||
+                          "/static/images/default-avatar.jpg"
+                        }
+                        alt="user_avatar"
+                        className="rounded-full"
+                      />
+                    </Box>
+                    <Box
+                      className={
+                        "flex flex-1 h-full self-start py-2 flex-col justify-between"
+                      }
+                    >
+                      <Box className={"flex flex-1 gap-1"}>
+                        <Typography
+                          className="line-clamp-2 text-ellipsis"
+                          fontWeight={"500"}
+                        >
+                          {`${notiItem?.fromUser?.firstName || ""} ${
+                            notiItem?.fromUser?.lastName || " "
+                          } `}
+                        </Typography>
+
+                        <Typography>
+                          {notiItem?.type === "like"
+                            ? " liked"
+                            : " commented on"}{" "}
+                          your post
+                        </Typography>
+                      </Box>
+                      <Typography
+                        className={`${notiItem?.isRead ? "" : "text-pMain"}`}
+                      >
+                        {moment(notiItem?.createdAt).toNow(true)} ago
+                      </Typography>
+                    </Box>
+                    <Box
+                      className={`w-4 aspect-square rounded-full ${
+                        !notiItem?.isRead ? "bg-pMain" : ""
+                      }`}
+                    />
+                  </Box>
+                </NotiItem>
+              ))
+            ) : (
+              <Empty title="Your notification center is empty, for now" />
+            )}
+          </Wrapper>
         </Box>
       </SlidingMenu>
     </Drawer>

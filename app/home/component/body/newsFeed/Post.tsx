@@ -3,7 +3,6 @@ import {
   Box,
   Grow,
   IconButton,
-  Link,
   MenuList,
   Paper,
   Popper,
@@ -13,7 +12,7 @@ import {
   MenuItem,
   useMediaQuery,
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
@@ -22,10 +21,9 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 
-import ShareRoundedIcon from "@mui/icons-material/ShareRounded";
 import { IPost } from "@/app/home/type";
 import { useAppSelector } from "@/lib/hooks";
-import { serviceLikePost } from "@/app/home/store/service";
+import { createNotification, serviceLikePost } from "@/app/home/store/service";
 import ModalConfirmDeletePost from "./ModalConfirmDeletePost";
 import ModalUpdatePost from "./ModalUpdatePost";
 import ModalDetailPost from "./ModalDetailPost";
@@ -43,7 +41,6 @@ const Post = ({ item }: { item: IPost }) => {
   const reactionAnchorRef = useRef();
   const isDesktop = useMediaQuery("(min-width: 1200px)");
   const user = useAppSelector((state) => state.auth.user);
-
   const handleReactPost = async (type: "haha" | "like" | "sad" | "love") => {
     try {
       setOpenReaction(false);
@@ -53,7 +50,34 @@ const Post = ({ item }: { item: IPost }) => {
       });
       if (res.status === 200) {
         setPostItem({ ...postItem, likes: res.data.data.likes });
+        if (res.data.data.likes[user?._id] && item.userId !== user?._id) {
+          handleCreateNotification({
+            toUser: item?.userId,
+            postId: item?._id,
+            type: "like",
+          });
+        }
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCreateNotification = async ({
+    toUser,
+    postId,
+    type,
+  }: {
+    toUser: string;
+    postId: string;
+    type: string;
+  }) => {
+    try {
+      const res = await createNotification({
+        toUser,
+        postId,
+        type,
+      });
     } catch (error) {
       console.log(error);
     }

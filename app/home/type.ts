@@ -44,3 +44,13 @@ export interface IMess {
   chatRoomId: string;
   createdAt: Date;
 }
+
+export interface INoti {
+  _id: string;
+  isRead: boolean;
+  postId: IPost;
+  toUser: string;
+  fromUser: IUser;
+  type: string;
+  createdAt: Date;
+}

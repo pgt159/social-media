@@ -17,6 +17,8 @@ import {
   chatRoomFetch,
   messOpenNewChatRoom,
 } from "@/lib/features/message/messSlice";
+import { useQuery } from "react-query";
+import { getNotificationUnread } from "../../store/service";
 
 const HomeHeaderDesktop = ({ user }: { user: IUser }) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -25,6 +27,19 @@ const HomeHeaderDesktop = ({ user }: { user: IUser }) => {
 
   const dispatch = useAppDispatch();
   const { allChatRoom, activeMess } = useAppSelector((state) => state.mess);
+
+  const { data, status } = useQuery({
+    queryKey: "notiUnread",
+    queryFn: async () => {
+      const res = await getNotificationUnread();
+      console.log(res);
+      if (res.status === 200) {
+        console.log(res.data.data);
+        return res.data.data;
+      }
+    },
+    staleTime: Infinity,
+  });
 
   const theme = useTheme();
   const dark = theme.palette.neutral.dark;
@@ -78,6 +93,8 @@ const HomeHeaderDesktop = ({ user }: { user: IUser }) => {
       dispatch(chatRoomFetch({}));
     }
   }, [isMessOpen]);
+
+  useEffect(() => {});
 
   return (
     <Box
@@ -137,7 +154,7 @@ const HomeHeaderDesktop = ({ user }: { user: IUser }) => {
               setIsNotiOpen(!isNotiOpen);
             }}
           >
-            <Badge badgeContent={4} color="error" max={99}>
+            <Badge badgeContent={data || 0} color="error" max={99}>
               <NotificationsIcon sx={{ color: dark, fontSize: "25px" }} />
             </Badge>
           </IconButton>

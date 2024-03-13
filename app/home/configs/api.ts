@@ -10,5 +10,9 @@ const API = {
   // MESSAGE
   CHATROOM_CRUD: "/chat",
   MESSAGE_CRUD: "/mess",
+
+  // NOTIFICATION
+  NOTI_CRUD: "/noti",
+  NOTI_UNREAD: "/noti/unread",
 };
 export default API;
