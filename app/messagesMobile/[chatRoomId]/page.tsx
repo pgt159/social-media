@@ -229,7 +229,7 @@ const ChatRoomMobile = ({ params }) => {
                   <Message
                     key={dataItem._id}
                     message={dataItem}
-                    user={dataItem.sentBy}
+                    // user={dataItem.sentBy}
                     isMyMessage={dataItem.sentBy?._id === me?._id}
                   />
                 ))
@@ -238,7 +238,7 @@ const ChatRoomMobile = ({ params }) => {
               <Message
                 key={v4()}
                 message={null}
-                user={user}
+                // user={user}
                 isMyMessage={false}
                 isTyping={true}
               />

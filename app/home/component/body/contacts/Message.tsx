@@ -17,11 +17,13 @@ const Message = ({
   isMyMessage,
   isTyping,
   picturePath,
-}: {
+}: // user,
+{
   message?: IMess;
   isMyMessage?: boolean;
   isTyping?: boolean;
   picturePath?: string;
+  // user?: IUser;
 }) => {
   const messStyle = {
     display: "flex",
